@@ -10,9 +10,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_logado.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import android.R.attr.fragment
-import android.R.attr.fragment
-
 
 
 
@@ -30,20 +27,20 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        //Chamando o view do fragment e substituindo o fragment blank
+        supportFragmentManager.beginTransaction().replace(R.id.flContent, ChartLineFragment()).commit()
     }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_suporte -> {
-                val fragmentManager = supportFragmentManager
-                val fragment: Fragment = RemoveFragment()
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.flContent, SuporteFragment()).commit()
             }
-            R.id.nav_info -> {
-                val fragmentManager = supportFragmentManager
-                val fragment: Fragment = SuporteFragment()
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit()
+
+            R.id.nav_analytics -> {
+                supportFragmentManager.beginTransaction().replace(R.id.flContent, ChartLineFragment()).commit()
             }
         }
 
