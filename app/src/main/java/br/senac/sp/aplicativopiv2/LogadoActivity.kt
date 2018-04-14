@@ -11,9 +11,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_logado.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-
-
-
 class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
