@@ -1,6 +1,5 @@
 package br.senac.sp.aplicativopiv2
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -40,5 +39,4 @@ class ChartLineFragment : Fragment() {
 
         return view
     }
-
 }
