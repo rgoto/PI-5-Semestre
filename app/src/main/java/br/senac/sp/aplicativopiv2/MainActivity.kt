@@ -1,9 +1,11 @@
 package br.senac.sp.aplicativopiv2
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Patterns
 import android.view.View
+import android.widget.Toast
+import br.senac.sp.aplicativopiv2.Utilities.ExternalConnections
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -17,8 +19,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        val intent = Intent(this, LogadoActivity::class.java)
-        startActivity(intent)
+        val email = editLogin.text.toString().trim()
+        val pass = editPass.text.toString().trim()
+
+        if (email.isEmpty() && pass.isEmpty()) {
+            editLogin.error = "E-mail Inválido"
+            editPass.error = "Senha Inválida"
+            editLogin.hasFocus()
+        }
+        else if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editLogin.error = "E-mail Inválido"
+            editLogin.hasFocus()
+        }
+        else if (pass.isEmpty()) {
+            editPass.error = "Senha Inválida"
+            editPass.hasFocus()
+        }
+        else {
+            val thread = Thread(Runnable {
+                kotlin.run {
+                    ExternalConnections.getInstance().loginUser(email, pass, applicationContext)
+                }
+            })
+            thread.start()
+
+            while (thread.isAlive) {
+                Toast.makeText(applicationContext, "Wait...", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }
