@@ -2,6 +2,7 @@ package br.senac.sp.aplicativopiv2.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,10 +40,14 @@ public class ExternalConnections extends UserData {
 
                             if (response.getInt("success") == 1) {
                                 JSONObject object = response.getJSONArray("dados").getJSONObject(0);
-                                user.setName(object.getString("nome"));
-                                user.setEmail(object.getString("email"));
                                 user.setId(object.getInt("id"));
+                                user.setFirstName(object.getString("first_name"));
+                                user.setMiddleName(object.getString("middle_name"));
+                                user.setName(user.getFirstName() + " " + user.getMiddleName());
+                                user.setEmail(object.getString("email"));
+                                user.setUrlPhoto(object.getString("img_url"));
 
+                                Log.d("DEBUGG", user.getUrlPhoto());
                                 UserData.getInstance().setInstance(user);
 
                                 Intent it = new Intent(context, LogadoActivity.class);

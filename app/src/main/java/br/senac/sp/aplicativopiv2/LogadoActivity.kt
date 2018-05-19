@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.Log
 import android.view.MenuItem
 import br.senac.sp.aplicativopiv2.Utilities.UserData
 import com.bumptech.glide.Glide
@@ -30,9 +31,10 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val header = nav_view.getHeaderView(0)
         header.textNavEmail.text = user.email.toString().trim()
-        header.textNavUser.text = user.name.toString().trim()
-        Glide.with(applicationContext).load("http://i.imgur.com/DvpvklR.png")
+        header.textNavUser.text = user.firstName.toString().trim()
+        Glide.with(applicationContext).load(user.urlPhoto)
                 .apply(RequestOptions.circleCropTransform()).into(header.imageView)
+        Log.d("DEBUGG", user.urlPhoto)
 
         nav_view.setNavigationItemSelectedListener(this)
 

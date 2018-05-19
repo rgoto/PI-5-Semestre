@@ -4,6 +4,9 @@ public class UserData {
     private String name;
     private String email;
     private String urlPhoto;
+    private String firstName;
+    private String middleName;
+
     private int id;
     private static UserData instance;
 
@@ -26,8 +29,20 @@ public class UserData {
     public void setId(int id) { this.id = id; }
 
     public String getUrlPhoto() { return urlPhoto; }
-    public void setUrlPhoto(String urlPhoto) { this.urlPhoto = urlPhoto; }
-
+    public void setUrlPhoto(String urlPhoto) {
+        if (urlPhoto.isEmpty() || urlPhoto.equals("null")) {
+            this.urlPhoto = "http://i.imgur.com/DvpvklR.png";
+        } else {
+            this.urlPhoto = urlPhoto;
+        }
+    }
     protected void setInstance(UserData userData) { instance = userData; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
+
 }
 
