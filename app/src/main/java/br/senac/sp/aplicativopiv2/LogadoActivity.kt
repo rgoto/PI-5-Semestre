@@ -57,4 +57,9 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+    }
 }

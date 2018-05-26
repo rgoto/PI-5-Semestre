@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.senac.sp.aplicativopiv2.LogadoActivity;
+import br.senac.sp.aplicativopiv2.MainActivity;
 
 public class ExternalConnections extends UserData {
     private static ExternalConnections instance;
