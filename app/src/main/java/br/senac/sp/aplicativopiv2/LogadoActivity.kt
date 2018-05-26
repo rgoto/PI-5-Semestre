@@ -1,5 +1,6 @@
 package br.senac.sp.aplicativopiv2
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -50,7 +51,12 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
 
             R.id.nav_analytics -> {
-                supportFragmentManager.beginTransaction().replace(R.id.flContent, ChartLineFragment()).commit()
+
+            }
+
+            R.id.nav_chart -> {
+                val intent = Intent(applicationContext, ChartLineFullScreen::class.java)
+                startActivity(intent)
             }
         }
 
@@ -58,8 +64,8 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         return true
     }
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         super.onBackPressed()
 
-    }
+    }*/
 }

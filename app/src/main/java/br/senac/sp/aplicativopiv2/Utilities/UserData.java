@@ -1,5 +1,9 @@
 package br.senac.sp.aplicativopiv2.Utilities;
 
+import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
+
 public class UserData {
     private String name;
     private String email;
@@ -9,6 +13,8 @@ public class UserData {
 
     private int id;
     private static UserData instance;
+    private ArrayList<Entry> gastoList;
+    private ArrayList<Entry> potenciaList;
 
     UserData(){ super(); }
 
@@ -44,5 +50,10 @@ public class UserData {
     public String getMiddleName() { return middleName; }
     public void setMiddleName(String middleName) { this.middleName = middleName; }
 
+    public ArrayList<Entry> getGastoList() {    return gastoList;   }
+    public void setGastoList(ArrayList<Entry> gastoList) {  this.gastoList = gastoList;   }
+
+    public ArrayList<Entry> getPotenciaList() { return potenciaList;    }
+    public void setPotenciaList(ArrayList<Entry> potenciaList) {    this.potenciaList = potenciaList;   }
 }
 

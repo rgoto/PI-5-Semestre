@@ -9,9 +9,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.mikephil.charting.data.Entry;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import br.senac.sp.aplicativopiv2.LogadoActivity;
 import br.senac.sp.aplicativopiv2.MainActivity;
@@ -53,6 +59,46 @@ public class ExternalConnections extends UserData {
 
                                 Intent it = new Intent(context, LogadoActivity.class);
                                 context.startActivity(it);
+                            }
+                            else {
+                                Toast.makeText(context, "Não foi possivel realizar o login", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    public void getDataById(final Context context) {
+        String url ="http://pi4sem.rbbr.com.br/teste/getDadosUSER.php?id=" + UserData.getInstance().getId() ;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("success") == 1) {
+                                JSONArray object = response.getJSONArray("user");
+                                UserData user = UserData.getInstance();
+
+                                for (int i = 0; i < object.length(); i++) {
+                                    JSONObject c = object.getJSONObject(i);
+
+                                    Double gasto = c.getDouble("gasto");
+                                    Double pontecia = c.getDouble("potencia");
+                                    String horario = c.getString("horario");
+
+                                    //user.getGastoList().add(, gasto);
+                                    //user.getPotenciaList().add(, pontecia);
+                                }
+
                             }
                             else {
                                 Toast.makeText(context, "Não foi possivel realizar o login", Toast.LENGTH_LONG).show();
