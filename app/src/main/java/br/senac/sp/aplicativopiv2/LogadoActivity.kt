@@ -51,7 +51,8 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
 
             R.id.nav_analytics -> {
-
+                val intent = Intent(applicationContext, RecyclerView::class.java)
+                startActivity(intent)
             }
 
             R.id.nav_chart -> {

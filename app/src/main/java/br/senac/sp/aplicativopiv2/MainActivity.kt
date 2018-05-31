@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         login.setText("rafael.fgoto@outlook.com")
 
         val pass = findViewById<EditText>(R.id.editPass)
-        pass.setText("123456")
+        pass.setText("101010")
 
         buttonLogin.setOnClickListener(this)
     }
