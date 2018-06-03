@@ -2,6 +2,7 @@ package br.senac.sp.aplicativopiv2.Utilities;
 
 import com.github.mikephil.charting.data.Entry;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UserData {
@@ -13,8 +14,12 @@ public class UserData {
 
     private int id;
     private static UserData instance;
-    private ArrayList<Entry> gastoList;
-    private ArrayList<Entry> potenciaList;
+    private static ArrayList<Double> gastoList;
+    private static ArrayList<Double> potenciaList;
+    private static ArrayList<String> horarioList;
+
+    private int stateLamp1;
+    private int stateLamp2;
 
     UserData(){ super(); }
 
@@ -50,10 +55,50 @@ public class UserData {
     public String getMiddleName() { return middleName; }
     public void setMiddleName(String middleName) { this.middleName = middleName; }
 
-    public ArrayList<Entry> getGastoList() {    return gastoList;   }
-    public void setGastoList(ArrayList<Entry> gastoList) {  this.gastoList = gastoList;   }
+    public static synchronized ArrayList<Double> getGastoList() {
+        if (gastoList == null)
+            gastoList = new ArrayList<>();
 
-    public ArrayList<Entry> getPotenciaList() { return potenciaList;    }
-    public void setPotenciaList(ArrayList<Entry> potenciaList) {    this.potenciaList = potenciaList;   }
+        return gastoList;
+    }
+    public void setGastoList(ArrayList<Double> list) {
+        gastoList = list;
+    }
+
+    public static synchronized ArrayList<Double> getPotenciaList() {
+        if (potenciaList == null)
+            potenciaList = new ArrayList<>();
+
+        return potenciaList;
+    }
+    public void setPotenciaList(ArrayList<Double> list) {
+        potenciaList = list;
+    }
+
+    public static synchronized ArrayList<String> getHorarioList() {
+        if (horarioList == null)
+            horarioList = new ArrayList<>();
+
+        return horarioList;
+    }
+    public void setHorarioList(ArrayList<String> list) {
+        horarioList = list;
+    }
+
+    public int getStateLamp1() {
+        return stateLamp1;
+    }
+
+    public void setStateLamp1(int stateLamp1) {
+        this.stateLamp1 = stateLamp1;
+    }
+
+    public int getStateLamp2() {
+        return stateLamp2;
+    }
+
+    public void setStateLamp2(int stateLamp2) {
+        this.stateLamp2 = stateLamp2;
+    }
 }
 

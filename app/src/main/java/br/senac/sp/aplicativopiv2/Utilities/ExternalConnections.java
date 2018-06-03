@@ -77,31 +77,38 @@ public class ExternalConnections extends UserData {
         VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public void getDataById(final Context context) {
-        String url ="http://pi4sem.rbbr.com.br/teste/getDadosUSER.php?id=" + UserData.getInstance().getId() ;
+    public void getDataById(final Context context, int id, final VolleyCallback callback) {
+        String url ="http://pi4sem.rbbr.com.br/teste/getDadosUSER.php?id=" + id ;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            UserData user = UserData.getInstance();
+
                             if (response.getInt("success") == 1) {
                                 JSONArray object = response.getJSONArray("user");
-                                UserData user = UserData.getInstance();
+
+                                ArrayList<Double> gastoList = getGastoList();
+                                ArrayList<Double> potenciaList = getPotenciaList();
+                                ArrayList<String> horarioList = getHorarioList();
 
                                 for (int i = 0; i < object.length(); i++) {
                                     JSONObject c = object.getJSONObject(i);
 
                                     Double gasto = c.getDouble("gasto");
-                                    Double pontecia = c.getDouble("potencia");
+                                    Double potencia = c.getDouble("potencia");
                                     String horario = c.getString("horario");
 
-                                    //user.getGastoList().add(, gasto);
-                                    //user.getPotenciaList().add(, pontecia);
+                                    gastoList.add(gasto);
+                                    potenciaList.add(potencia);
+                                    horarioList.add(horario);
                                 }
+                                user.setGastoList(gastoList);
+                                user.setPotenciaList(potenciaList);
+                                user.setHorarioList(horarioList);
 
-                            }
-                            else {
-                                Toast.makeText(context, "Não foi possivel realizar o login", Toast.LENGTH_LONG).show();
+                                callback.onSuccess(response);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -116,4 +123,84 @@ public class ExternalConnections extends UserData {
 
         VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+
+
+    public void getStateOfLamps(final Context context, int id, final VolleyCallback callback) {
+        String url = "http://pi4sem.rbbr.com.br/teste/verificaEstado.php?id=" + id;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("success") == 1) {
+                                JSONObject object = response.getJSONArray("dados").getJSONObject(0);
+
+                                UserData.getInstance().setStateLamp1(object.getInt("lamp1"));
+                                UserData.getInstance().setStateLamp2(object.getInt("lamp2"));
+                                Log.d("USER DATA", "" + UserData.getInstance().getStateLamp1());
+                                Log.d("USER DATA", "" + UserData.getInstance().getStateLamp2());
+                                callback.onSuccess(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    public void setStateOfLamps (final Context context, int state, int id, final VolleyCallback callback) {
+        String url = "http://pi4sem.rbbr.com.br/teste/mudaEstado.php?lamp1=" + state + "&id=" + id;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("success") == 1) {
+                                callback.onSuccess(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    public void getDataFloatById (final Context context, int id, final VolleyCallback callback) {
+        String url ="http://pi4sem.rbbr.com.br/teste/getDados.php?id=" + id ;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("success") == 1) {
+                                callback.onSuccess(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
 }

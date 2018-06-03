@@ -1,11 +1,14 @@
 package br.senac.sp.aplicativopiv2
 
+import android.app.usage.UsageEvents
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
+import br.senac.sp.aplicativopiv2.Utilities.ExternalConnections
+import br.senac.sp.aplicativopiv2.Utilities.UserData
 import kotlinx.android.synthetic.main.fragment_suporte.*
 
 class RecyclerView : AppCompatActivity() {
@@ -20,19 +23,12 @@ class RecyclerView : AppCompatActivity() {
 
         val users = ArrayList<UserRecycler>()
 
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
-        users.add(UserRecycler("10/15/1995", 15.5, 45 ))
+        for ((i, horario) in UserData.getHorarioList().withIndex()) {
+            users.add(UserRecycler(horario, UserData.getPotenciaList()[i], UserData.getGastoList()[i]))
+        }
 
         val adapter = CustomAdpater(users)
         recyclerView.adapter = adapter
-
-
-
 
     }
 }

@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             while (thread.isAlive) {
                 Toast.makeText(applicationContext, "Wait...", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 

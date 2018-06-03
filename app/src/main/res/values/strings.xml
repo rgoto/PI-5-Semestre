@@ -17,4 +17,8 @@
     <string name="support_email">rafael.fgoto@outlook.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="l_mpada_1">Lâmpada 1:</string>
+    <string name="l_mpada_2">Lâmpada 2:</string>
+    <string name="ligada">Ligada</string>
+    <string name="desligada">Desligada</string>
 </resources>

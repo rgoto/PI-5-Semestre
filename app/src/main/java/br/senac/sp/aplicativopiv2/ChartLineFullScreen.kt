@@ -17,8 +17,13 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import br.senac.sp.aplicativopiv2.ChartLineFullScreen.MyYAxisValueFormatter
 import android.R.attr.entries
 import android.widget.Toast
+import br.senac.sp.aplicativopiv2.Utilities.ExternalConnections
+import br.senac.sp.aplicativopiv2.Utilities.UserData
+import br.senac.sp.aplicativopiv2.Utilities.VolleyCallback
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import org.json.JSONArray
+import org.json.JSONObject
 
 class ChartLineFullScreen : AppCompatActivity() {
 
@@ -27,6 +32,14 @@ class ChartLineFullScreen : AppCompatActivity() {
         setContentView(R.layout.activity_chart_line_full)
 
         val listData = ArrayList<Entry>()
+
+        var x = 0f
+        for (value in UserData.getGastoList()) {
+            listData.add(Entry(x, value.toFloat()))
+            x++
+        }
+
+        /*val listData = ArrayList<Entry>()
         listData.add(Entry(0f, 100f))
         listData.add(Entry(0.5f, 200f))
         listData.add(Entry(1f, 75f))
@@ -74,16 +87,16 @@ class ChartLineFullScreen : AppCompatActivity() {
         listData.add(Entry(22f, 100f))
         listData.add(Entry(22.5f, 75f))
         listData.add(Entry(23f, 200f))
-        listData.add(Entry(23.5f, 75f))
+        listData.add(Entry(23.5f, 75f))*/
 
         val lineChart = findViewById<View>(R.id.lineChart) as LineChart
 
-        val xAxis = lineChart.xAxis
+       /* val xAxis = lineChart.xAxis
         xAxis.valueFormatter = MyXAxisValueFormatter()
         xAxis.granularity = 1f
 
         val yAxis = lineChart.axisLeft
-        yAxis.valueFormatter = MyYAxisValueFormatter()
+        yAxis.valueFormatter = MyYAxisValueFormatter()*/
 
 
         val dataSet = LineDataSet(listData, "Vendas")
@@ -98,7 +111,7 @@ class ChartLineFullScreen : AppCompatActivity() {
 
         lineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry, h: Highlight) {
-                Toast.makeText(this@ChartLineFullScreen,  "" + e.x + " R$ " + e.y,
+                Toast.makeText(this@ChartLineFullScreen,  "" + e.x + " " + e.y,
                         Toast.LENGTH_SHORT).show()
             }
 

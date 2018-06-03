@@ -8,12 +8,19 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
+import br.senac.sp.aplicativopiv2.Utilities.ExternalConnections
 import br.senac.sp.aplicativopiv2.Utilities.UserData
+import br.senac.sp.aplicativopiv2.Utilities.VolleyCallback
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_logado.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import org.json.JSONException
+import org.json.JSONObject
+
+
 
 class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,22 +58,23 @@ class LogadoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
 
             R.id.nav_analytics -> {
-                val intent = Intent(applicationContext, RecyclerView::class.java)
-                startActivity(intent)
+                ExternalConnections.getInstance().getDataById(applicationContext, UserData.getInstance().id, object: VolleyCallback {
+                    override fun onSuccess(response: JSONObject) {
+                        val intent = Intent(applicationContext, RecyclerView::class.java)
+                        startActivity(intent)
+                    }
+                })
             }
 
             R.id.nav_chart -> {
-                val intent = Intent(applicationContext, ChartLineFullScreen::class.java)
-                startActivity(intent)
+                ExternalConnections.getInstance().getDataById(applicationContext, UserData.getInstance().id) {
+                    val intent = Intent(applicationContext, ChartLineFullScreen::class.java)
+                    startActivity(intent)
+                }
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
-
-    /*override fun onBackPressed() {
-        super.onBackPressed()
-
-    }*/
 }
