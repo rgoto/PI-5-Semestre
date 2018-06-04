@@ -24,7 +24,7 @@ class RecyclerView : AppCompatActivity() {
         val users = ArrayList<UserRecycler>()
 
         for ((i, horario) in UserData.getHorarioList().withIndex()) {
-            users.add(UserRecycler(horario, UserData.getPotenciaList()[i], UserData.getGastoList()[i]))
+            users.add(UserRecycler(horario, "Potência: " + UserData.getPotenciaList()[i], "Gasto: " + UserData.getGastoList()[i]))
         }
 
         val adapter = CustomAdpater(users)

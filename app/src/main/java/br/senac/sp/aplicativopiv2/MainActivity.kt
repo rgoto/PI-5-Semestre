@@ -1,5 +1,6 @@
 package br.senac.sp.aplicativopiv2
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Patterns
@@ -45,7 +46,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         else {
             val thread = Thread(Runnable {
                 kotlin.run {
-                    ExternalConnections.getInstance().loginUser(email, pass, applicationContext)
+                    ExternalConnections.getInstance().loginUser(email, pass, applicationContext) {result ->
+                        ExternalConnections.getInstance().getGasto2Min(applicationContext, result.getInt("id")) {
+                            val it = Intent(applicationContext, LogadoActivity::class.java)
+                            applicationContext.startActivity(it)
+                        }
+                    }
                 }
             })
             thread.start()

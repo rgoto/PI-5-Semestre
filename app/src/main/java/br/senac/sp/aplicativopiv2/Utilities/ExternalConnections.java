@@ -36,7 +36,7 @@ public class ExternalConnections extends UserData {
         return instance;
     }
 
-    public void loginUser(String email, String pass, final Context context) {
+    public void loginUser(String email, String pass, final Context context, final VolleyCallback callback) {
         String url ="http://pi4sem.rbbr.com.br/teste/login.php?email=" + email + "&senha=" + pass;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -57,8 +57,7 @@ public class ExternalConnections extends UserData {
                                 Log.d("DEBUGG", user.getUrlPhoto());
                                 UserData.getInstance().setInstance(user);
 
-                                Intent it = new Intent(context, LogadoActivity.class);
-                                context.startActivity(it);
+                                callback.onSuccess(object);
                             }
                             else {
                                 Toast.makeText(context, "Não foi possivel realizar o login", Toast.LENGTH_LONG).show();
@@ -187,6 +186,69 @@ public class ExternalConnections extends UserData {
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getInt("success") == 1) {
+                                callback.onSuccess(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    public void monthlyPrediction(final Context context, int id, final VolleyCallback callback) {
+        String url = "http://pi4sem.rbbr.com.br/teste/previsaoMensal.php?id=" + id ;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("success") == 1) {
+                                callback.onSuccess(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        VolleyRequest.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    public void getGasto2Min(final Context context, int id, final VolleyCallback callback) {
+            String url = "http://pi4sem.rbbr.com.br/teste/getDadosMin.php?id=" + id ;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            UserData user = UserData.getInstance();
+
+                            if (response.getInt("success") == 1) {
+                                JSONArray object = response.getJSONArray("user");
+
+                                ArrayList<Double> gastoList = getGasto2minList();
+
+                                for (int i = 0; i < object.length(); i++) {
+                                    JSONObject c = object.getJSONObject(i);
+
+                                    Double gasto = c.getDouble("gasto");
+
+                                    gastoList.add(gasto);
+                                }
+                                user.setGasto2minList(gastoList);
+
                                 callback.onSuccess(response);
                             }
                         } catch (JSONException e) {

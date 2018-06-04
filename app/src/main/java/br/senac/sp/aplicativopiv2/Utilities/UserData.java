@@ -17,9 +17,11 @@ public class UserData {
     private static ArrayList<Double> gastoList;
     private static ArrayList<Double> potenciaList;
     private static ArrayList<String> horarioList;
+    private static ArrayList<Double> gasto2minList;
 
     private int stateLamp1;
     private int stateLamp2;
+    private double previsao;
 
     UserData(){ super(); }
 
@@ -88,7 +90,6 @@ public class UserData {
     public int getStateLamp1() {
         return stateLamp1;
     }
-
     public void setStateLamp1(int stateLamp1) {
         this.stateLamp1 = stateLamp1;
     }
@@ -96,9 +97,25 @@ public class UserData {
     public int getStateLamp2() {
         return stateLamp2;
     }
-
     public void setStateLamp2(int stateLamp2) {
         this.stateLamp2 = stateLamp2;
+    }
+
+    public double getPrevisao() {
+        return previsao;
+    }
+    public void setPrevisao(double previsao) {
+        this.previsao = previsao;
+    }
+
+    public static synchronized ArrayList<Double> getGasto2minList() {
+        if (gasto2minList == null)
+            gasto2minList = new ArrayList<>();
+
+        return gasto2minList;
+    }
+    public void setGasto2minList(ArrayList<Double> list) {
+        gasto2minList = list;
     }
 }
 
