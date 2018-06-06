@@ -60,7 +60,7 @@ public class ExternalConnections extends UserData {
                                 callback.onSuccess(object);
                             }
                             else {
-                                Toast.makeText(context, "Não foi possivel realizar o login", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Dados incorretos", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -84,6 +84,9 @@ public class ExternalConnections extends UserData {
                     public void onResponse(JSONObject response) {
                         try {
                             UserData user = UserData.getInstance();
+                            user.setGastoList(null);
+                            user.setHorarioList(null);
+                            user.setPotenciaList(null);
 
                             if (response.getInt("success") == 1) {
                                 JSONArray object = response.getJSONArray("user");
@@ -210,7 +213,25 @@ public class ExternalConnections extends UserData {
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getInt("success") == 1) {
-                                callback.onSuccess(response);
+                                JSONArray obj = response.getJSONArray("dados");
+
+                                for (int i = 0; i < obj.length(); i++) {
+                                    JSONObject c = obj.getJSONObject(i);
+                                    double value =  c.getDouble("week");
+
+                                    if (value > 0.1){
+                                        ArrayList<Double> week = getWeeksList();
+                                        week.add(value);
+                                        UserData.setWeeksList(week);
+                                    }
+                                    Log.d("DEBUGG", ""+ UserData.getWeeksList().get(i));
+                                }
+                                if (UserData.getWeeksList() == null) {
+                                    Log.d("DEBUGG", "está nullo");
+                                } else {
+                                    Log.d("DEBUGG", "populado");
+                                }
+                                callback.onSuccess(null);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -234,6 +255,7 @@ public class ExternalConnections extends UserData {
                     public void onResponse(JSONObject response) {
                         try {
                             UserData user = UserData.getInstance();
+                            user.setGasto2minList(null);
 
                             if (response.getInt("success") == 1) {
                                 JSONArray object = response.getJSONArray("user");

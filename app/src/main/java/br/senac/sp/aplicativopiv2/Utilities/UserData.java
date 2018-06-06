@@ -18,6 +18,7 @@ public class UserData {
     private static ArrayList<Double> potenciaList;
     private static ArrayList<String> horarioList;
     private static ArrayList<Double> gasto2minList;
+    private static ArrayList<Double> weeksList;
 
     private int stateLamp1;
     private int stateLamp2;
@@ -116,6 +117,16 @@ public class UserData {
     }
     public void setGasto2minList(ArrayList<Double> list) {
         gasto2minList = list;
+    }
+
+    public static ArrayList<Double> getWeeksList() {
+        if (weeksList == null)
+            weeksList = new ArrayList<>();
+
+        return weeksList;
+    }
+    public static void setWeeksList(ArrayList<Double> weeksList) {
+        UserData.weeksList = weeksList;
     }
 }
 

@@ -73,7 +73,7 @@ class ChartLineFullScreen : AppCompatActivity() {
     inner class MyYAxisValueFormatter : IAxisValueFormatter {
 
         override fun getFormattedValue(value: Float, axis: AxisBase): String {
-            return "R$ $value"
+            return "$value W"
         }
     }
 

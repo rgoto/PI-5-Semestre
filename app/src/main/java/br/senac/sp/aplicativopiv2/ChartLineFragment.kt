@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
@@ -15,9 +16,11 @@ import br.senac.sp.aplicativopiv2.Utilities.ExternalConnections
 import br.senac.sp.aplicativopiv2.Utilities.UserData
 import br.senac.sp.aplicativopiv2.Utilities.VolleyCallback
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import org.json.JSONObject
@@ -30,6 +33,7 @@ class ChartLineFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_chart_line, container, false)
 
         val externalConnections = ExternalConnections.getInstance()
+        ExpenditureForecast.getInstance().monthlyPrediction(UserData.getInstance().id, context)
 
         //Verifica Estado da lampada
         val switchLamp1 = view.findViewById<View>(R.id.switch1) as Switch
@@ -66,9 +70,12 @@ class ChartLineFragment : Fragment() {
         lineChart.isDoubleTapToZoomEnabled = false
         lineChart.description.text = "Gasto nas últimas 24Horas (2 min)"
 
+        val yAxis = lineChart.axisLeft
+        yAxis.valueFormatter = MyYAxisValueFormatter()
+
         lineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry, h: Highlight) {
-                Toast.makeText(context,  "" + UserData.getHorarioList()[e.x.toInt()] + " " + e.y,
+                Toast.makeText(context,  "Valor: R$ " + e.y,
                         Toast.LENGTH_SHORT).show()
             }
 
@@ -94,13 +101,35 @@ class ChartLineFragment : Fragment() {
             }
         }
 
-        //adicionando a previsão no codigo
+       /* adicionando a previsão no codigo
         val previsao = view.findViewById<View>(R.id.previsao) as TextView
-        ExpenditureForecast.getInstance().monthlyPrediction(UserData.getInstance().id, context)
+        previsao.text = UserData.getWeeksList()[0].toString()
 
         val textPrevisao = "R$ " + UserData.getInstance().previsao
-        previsao.text = textPrevisao
+            previsao.text = textPrevisao*//*
+
+        val btn = view.findViewById<View>(R.id.btnAtualizar) as Button
+        btn.setOnClickListener({
+            externalConnections.getGasto2Min(context, UserData.getInstance().id) {
+                x = 0f
+                for (value in UserData.getGasto2minList()) {
+                    listData.add(Entry(x, value.toFloat()))
+                    x++
+                }
+
+                lineChart.notifyDataSetChanged()
+                lineChart.invalidate()
+            }
+        })*/
 
         return view
     }
+
+    inner class MyYAxisValueFormatter : IAxisValueFormatter {
+
+        override fun getFormattedValue(value: Float, axis: AxisBase): String {
+            return "R$ $value"
+        }
+    }
+
 }
